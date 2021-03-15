@@ -10,7 +10,7 @@ instance.
 To get the application up and running in dev mode:
 
 1. Ensure that you have Node and yarn installed.
-2. Install lineup: `yarn add vue-lineup`
+2. Install lineup: `npm install --save vue-lineup`
 3. Open Docker preferences and increase memory usage to at least 5GB.
 4. Check out this repository and move into it (e.g., `cd vbq`).
 5. Copy .env.development to .env with `cp .env.development .env`

@@ -791,7 +791,7 @@ export default Vue.extend({
       state: State,
       nodeID: string,
       interaction: keyof State['selections'],
-      interactionName: string = interaction,
+      interactionName: any = interaction,
     ): void {
       if (nodeID in state.selections[interaction]) {
         // Remove element if in list, if list is empty, delete key
@@ -951,13 +951,13 @@ export default Vue.extend({
       );
 
       // Reset lineup data if something is already being displayed
-      const newlineupdata = [];
+      const newlineupdata: any[] = [];
       // Combine node + link data
       linkDataToDisplay.forEach((l: Link) => {
         let rowObject: any = {};
-        const lclone = {};
+        const lclone: any = {};
         nodeDataToDisplay.forEach((n: Node) => {
-          const nclone = {};
+          const nclone:any = {};
           if (n.id === l.sourceID) {
             for (const key in n) {
               const newkey: string = 'S:' + key;

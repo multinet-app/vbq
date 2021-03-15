@@ -201,7 +201,7 @@ export default Vue.extend({
       columnHeader: [
         {
           label: 'Count',
-          value: (d) => d.value,
+          value: (d:any) => d.value,
         },
       ],
     };
@@ -262,9 +262,9 @@ export default Vue.extend({
         return familyTree;
       }
     },
-    colorDomain(): number[] {
-      let colorDomain = [];
-      this.nodesLength.forEach((node: Node) => {
+    colorDomain(): any[] {
+      let colorDomain: any[] = [];
+      this.nodesLength.forEach((node: any) => {
         if (node.depth === 2) {
           colorDomain.push(node.id.replace(/\s/g, ''));
         }
@@ -279,7 +279,7 @@ export default Vue.extend({
         .range(d3.schemeCategory10);
     },
     colorTracker(): any {
-      const colorDict = {};
+      const colorDict:any = {};
       this.colorDomain.forEach((n: number) => {
         colorDict[n] = [];
       });
@@ -321,7 +321,7 @@ export default Vue.extend({
     // Set up color scale
     const colorDomainVals: string[] = this.root
       .descendants()
-      .map((c) => (c.children ? null : c.data.id));
+      .map((c:any) => (c.children ? null : c.data.id));
     this.colorScaleVal = d3
       .scaleOrdinal()
       .domain(colorDomainVals)
@@ -377,7 +377,7 @@ export default Vue.extend({
             return 'slategrey';
           } else {
             const ancestors = d.ancestors();
-            ancestors.forEach((node: Node) => {
+            ancestors.forEach((node: any) => {
               const id = node.id.replace(/\s/g, '');
               if (this.colorDomain.includes(id)) {
                 ancestorID = id;
@@ -405,17 +405,14 @@ export default Vue.extend({
       );
 
       //  Calculate numbers of nodes in each category
-      const schemaTable = {};
-      this.schemaNetwork.nodes.forEach((n) => {
+      const schemaTable: any = {};
+      this.schemaNetwork.nodes.forEach((n:any) => {
         schemaTable[n.Label] = n.children.length;
       });
 
-      console.log('SCHEMA TABLE', schemaTable);
-      console.log('data', this.root.descendants());
-
-      const tableData = [];
-      this.root.descendants().forEach((n) => {
-        const obj = { key: '', value: 0 };
+      const tableData: any[] = [];
+      this.root.descendants().forEach((n:any) => {
+        const obj: any = { key: '', value: 0 };
         if (schemaTable[n.id.toUpperCase()]) {
           obj.key = n.id;
           obj.value = schemaTable[n.id.toUpperCase()];
@@ -426,8 +423,6 @@ export default Vue.extend({
           tableData.push(obj);
         }
       });
-
-      console.log('TABLE DATA', tableData);
 
       for (const { label } of this.columnHeader) {
         this.svg
@@ -444,9 +439,9 @@ export default Vue.extend({
           .attr('dy', '0.32em')
           .attr('x', this.width - label.length)
           .attr('text-anchor', 'end')
-          .attr('fill', (d) => (d.children ? null : '#555'))
+          .attr('fill', (d:any) => (d.children ? null : '#555'))
           .data(tableData)
-          .text((d) => d.value);
+          .text((d:any) => d.value);
       }
 
       node
@@ -466,7 +461,7 @@ export default Vue.extend({
 
     click(this: any, d: any) {
       const allPaths = [];
-      const change: string[] = this.familyTree.filter((i) => i == d.id);
+      const change: string[] = this.familyTree.filter((i:any) => i == d.id);
       allPaths.push(d.index);
       if (d.parent) {
         if (d.children) {

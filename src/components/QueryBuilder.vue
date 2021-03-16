@@ -218,7 +218,7 @@ export default Vue.extend({
       );
       // Create dictionary: children as keys, parents as values
       const schemaDict: any = parents.reduce(function (
-        schemaDict,
+        schemaDict: any,
         field,
         index,
       ) {

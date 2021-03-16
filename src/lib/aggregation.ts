@@ -110,7 +110,13 @@ export function superGraph(nodes: Node[], edges: Link[], attribute: string) {
 // to reflect the connections between a schema node and the original nodes
 // in the network based on a classification hierarchy
 
-export function schemaGraph(nodes: any[], edges: any[], selectedSchema: string[], schema: any[], label: string) {
+export function schemaGraph(
+  nodes: any[],
+  edges: any[],
+  selectedSchema: string[],
+  schema: any[],
+  label: string,
+) {
   // de-construct nodes into their original components and
   // make a new list of nodes
 
@@ -128,7 +134,7 @@ export function schemaGraph(nodes: any[], edges: any[], selectedSchema: string[]
   });
 
   // store current schema as set
-  const selectedAttributes = new Set(selectedSchema)
+  const selectedAttributes = new Set(selectedSchema);
 
   // create the list of super nodes
   // TODO do not hardcode Label key in superNode object
@@ -152,13 +158,12 @@ export function schemaGraph(nodes: any[], edges: any[], selectedSchema: string[]
   function lineage(key: any, counter: number, node: any) {
     // To handle empty data (remove after integrating with multinet data)
     if (key.length > 0) {
-
       // Check for fuzzy match of key first
       if (schema[key] === undefined) {
         for (const k in schema) {
-          const startswith = k.replace(' ', '').slice(0, 3)
+          const startswith = k.replace(' ', '').slice(0, 3);
           if (key.startsWith(startswith)) {
-            key = k
+            key = k;
           }
         }
       }
@@ -169,8 +174,7 @@ export function schemaGraph(nodes: any[], edges: any[], selectedSchema: string[]
           (superNode) => superNode.Label === key,
         );
         if (superNode != undefined) superNode.children.push(node.id);
-      }
-      else if (selectedAttributes.has(schema[key])) {
+      } else if (selectedAttributes.has(schema[key])) {
         const superNode = superNodes.find(
           (superNode) => superNode.Label === schema[key],
         );
@@ -182,33 +186,33 @@ export function schemaGraph(nodes: any[], edges: any[], selectedSchema: string[]
         if (superNode != undefined) superNode.children.push(node.id);
         // if parent is not in set, update key to be parent
       } else {
-        const newKey: string = schema[key]
-        counter += 1
-        lineage(newKey, counter, node)
+        const newKey: string = schema[key];
+        counter += 1;
+        lineage(newKey, counter, node);
       }
     }
-
-
   }
 
   newNodes.forEach((node: any) => {
     if (node[label]) {
-      const key: string = node[label].toUpperCase().trim()
+      const key: string = node[label].toUpperCase().trim();
       if (key) {
-        lineage(key, 0, node)
+        lineage(key, 0, node);
       }
     }
   });
 
   //  remove super nodes that dont have children
-  const finalNodes: any[] = superNodes.filter((superNode) => superNode.children.length > 0)
+  const finalNodes: any[] = superNodes.filter(
+    (superNode) => superNode.children.length > 0,
+  );
 
   // make a new list of edges for the supergraph network
   const schemaLinks: any = [];
 
   edges.forEach((link: any) => {
-    const linkFrom = link._from
-    const linkTo = link._to
+    const linkFrom = link._from;
+    const linkTo = link._to;
 
     finalNodes.forEach((schemaNode) => {
       // check if the _from and _to are in the origin list
@@ -217,25 +221,26 @@ export function schemaGraph(nodes: any[], edges: any[], selectedSchema: string[]
           const newLinkFrom = schemaNode.id;
           link._from = newLinkFrom;
           link.source = link._from;
-          link.sourceID = linkFrom
-        }
-        else if (linkTo === child) {
+          link.sourceID = linkFrom;
+        } else if (linkTo === child) {
           const newLinkTo = schemaNode.id;
           link._to = newLinkTo;
           link.target = link._to;
-          link.targetID = linkTo
-        }
-        else {
+          link.targetID = linkTo;
+        } else {
           link.target = link._to;
-          link.targetID = linkTo
-          link.sourceID = linkFrom
+          link.targetID = linkTo;
+          link.sourceID = linkFrom;
           link.source = link._from;
         }
       });
     });
-    const startswith = "supernodes"
-    if (link.source.startsWith(startswith) && link.target.startsWith(startswith)) {
-      schemaLinks.push(link)
+    const startswith = 'supernodes';
+    if (
+      link.source.startsWith(startswith) &&
+      link.target.startsWith(startswith)
+    ) {
+      schemaLinks.push(link);
     }
   });
 
@@ -243,10 +248,10 @@ export function schemaGraph(nodes: any[], edges: any[], selectedSchema: string[]
   const network = {
     nodes: finalNodes,
     links: schemaLinks,
-  }
+  };
 
-    return network;
-  }
+  return network;
+}
 // Function that creates a deep copy of nodes to prevent modifying
 // the network arguments that are passed into the expand and retract
 // supergraph functions

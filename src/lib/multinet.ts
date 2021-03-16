@@ -132,7 +132,7 @@ export async function filterData(
   workspace: string,
   query: string,
 ): Promise<any[]> {
-  let multinetPaths = []
+  let multinetPaths = [];
 
   const apiRoot = 'http://localhost:5000/api';
 
@@ -143,7 +143,6 @@ export async function filterData(
   if (multinetPaths.length === 0) {
     console.log('No results for this query');
   }
-
 
   return multinetPaths;
 }

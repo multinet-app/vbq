@@ -525,7 +525,7 @@ export default Vue.extend({
           return `translate(${this.orderingScale(i)})rotate(-90)`;
         });
 
-       this.edgeColumns.exit().remove();
+      this.edgeColumns.exit().remove();
 
       const columnEnter = this.edgeColumns
         .enter()
@@ -659,8 +659,8 @@ export default Vue.extend({
           this.unHoverNode(d.id);
         })
         .on('click', (d: Node) => {
-            this.selectElement(d);
-            this.selectNeighborNodes(d.id, d.neighbors);
+          this.selectElement(d);
+          this.selectNeighborNodes(d.id, d.neighbors);
         });
       rowEnter.append('g').attr('class', 'cellsGroup');
       this.edgeRows.merge(rowEnter);
@@ -692,7 +692,7 @@ export default Vue.extend({
         })
         .on('click', (d: Cell) => {
           this.displayValue(d);
-          this.selectElement(d)
+          this.selectElement(d);
         })
         .attr('cursor', 'pointer');
       this.cells.exit().remove();
@@ -957,7 +957,7 @@ export default Vue.extend({
         let rowObject: any = {};
         const lclone: any = {};
         nodeDataToDisplay.forEach((n: Node) => {
-          const nclone:any = {};
+          const nclone: any = {};
           if (n.id === l.sourceID) {
             for (const key in n) {
               const newkey: string = 'S:' + key;
@@ -989,7 +989,7 @@ export default Vue.extend({
       });
 
       this.lineupdata = [];
-      
+
       this.lineupdata = newlineupdata;
     },
 

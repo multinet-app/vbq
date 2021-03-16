@@ -81,21 +81,21 @@ export default Vue.extend({
         aqlPaths,
       };
     },
-    colorScale(this:any): any {
+    colorScale(this: any): any {
       const colorDomain: string[] = Object.keys(this.colorsDict).sort();
       return d3.scaleOrdinal().domain(colorDomain).range(d3.schemeCategory10);
     },
-    indexLinks(this:any): any {
+    indexLinks(this: any): any {
       let indexLinks: any = {};
       for (let i = 0; i < this.schemaNetwork.nodes.length; i++) {
         indexLinks[i + ',' + i] = 1;
-        this.schemaNetwork.links.forEach(function (d:any) {
+        this.schemaNetwork.links.forEach(function (d: any) {
           indexLinks[d.source.index + ',' + d.target.index] = 1;
         });
       }
       return indexLinks;
     },
-    aqlNetwork(this:any): any {
+    aqlNetwork(this: any): any {
       let aqlNetwork: Network = { nodes: [], links: [] };
       // check for duplicates
       let nodeChecker: string[] = [];
@@ -210,10 +210,10 @@ export default Vue.extend({
       // move this to another function that watches for treeRelationships
       const childColumn = Object.keys(this.treeRelationships[0])[0];
       const parentColumn = Object.keys(this.treeRelationships[0])[1];
-      const children: string[] = this.treeRelationships.map((c:any) =>
+      const children: string[] = this.treeRelationships.map((c: any) =>
         c[childColumn].toUpperCase(),
       );
-      const parents: string[] = this.treeRelationships.map((p:any) =>
+      const parents: string[] = this.treeRelationships.map((p: any) =>
         p[parentColumn].toUpperCase(),
       );
       // Create dictionary: children as keys, parents as values
@@ -229,7 +229,7 @@ export default Vue.extend({
       this.schemaDict = schemaDict;
       // Create list of all the current leaves
       const groups: string[] = [];
-      this.currentSchema.forEach((n:any) => {
+      this.currentSchema.forEach((n: any) => {
         if (n.children == null && n.id != undefined) {
           groups.push(n.id.toUpperCase());
         }
@@ -341,18 +341,18 @@ export default Vue.extend({
           });
       });
       // Check if neighbors
-      function neighbors(this:any, a:any, b:any) {
+      function neighbors(this: any, a: any, b: any) {
         return this.indexLinks[a.index + ',' + b.index];
       }
-      function neighborNodes(this:any) {
+      function neighborNodes(this: any) {
         console.log('DOUBLE CLICK');
         if (this.neighborToggle) {
           //Reduce the opacity of all but the neighbouring nodes
           let d = d3.select(this).node().__data__;
-          nodes.style('opacity', function (o:any) {
+          nodes.style('opacity', function (o: any) {
             return neighbors(d, o) || neighbors(o, d) ? 1 : 0.1;
           });
-          edges.style('opacity', function (o:any) {
+          edges.style('opacity', function (o: any) {
             return d.index == o.source.index || d.index == o.target.index
               ? 1
               : 0.1;
@@ -367,17 +367,17 @@ export default Vue.extend({
         }
       }
       // Drag functions
-      function dragstarted(this:any) {
+      function dragstarted(this: any) {
         d3.select(this).clone(true).classed('notclone', true); // look into this
         d3.select(this).raise().attr('stroke', 'black').classed('clone', true);
         force.stop();
       }
-      function dragged(this:any,d: any) {
+      function dragged(this: any, d: any) {
         d3.select(this)
           .attr('cx', (d.x = d3.event.x))
           .attr('cy', (d.y = d3.event.y));
       }
-      function dragended(this:any) {
+      function dragended(this: any) {
         const mouseCoordinates = d3.mouse(this);
         const networkHeight: any = d3.select('#schemaView').attr('height');
         const networkWidth: any = d3.select('#schemaView').attr('width');
@@ -440,7 +440,7 @@ export default Vue.extend({
           .on('drag', dragged)
           .on('end', dragended),
       );
-      nodes.on('dblclick', function (e:any) {
+      nodes.on('dblclick', function (e: any) {
         console.log('DOUBLE CLICK', e, neighborNodes);
       }); //neighborNodes);
       d3.selectAll('.legendRect').on('click', (l: any) => {
@@ -509,7 +509,7 @@ export default Vue.extend({
       }
     },
     createTableHeaders(): any {
-      let tableHeaders:any = [
+      let tableHeaders: any = [
         {
           text: 'Path',
           align: 'start',
@@ -539,7 +539,7 @@ export default Vue.extend({
       });
       this.tableHeaders = tableHeaders;
     },
-    createTableData(this:any) {
+    createTableData(this: any) {
       const tableData: any[] = [];
       this.aqlPaths.forEach((path: any, j: number) => {
         let pathData: any = {};
@@ -633,18 +633,18 @@ export default Vue.extend({
           });
       });
       // Check if neighbors
-      function neighbors(this:any, a:any, b:any) {
+      function neighbors(this: any, a: any, b: any) {
         return this.indexLinks[a.index + ',' + b.index];
       }
-      function neighborNodes(this:any) {
+      function neighborNodes(this: any) {
         console.log('DOUBLE CLICK');
         if (this.neighborToggle) {
           //Reduce the opacity of all but the neighbouring nodes
           let d = d3.select(this).node().__data__;
-          nodes.style('opacity', function (o:any) {
+          nodes.style('opacity', function (o: any) {
             return neighbors(d, o) || neighbors(o, d) ? 1 : 0.1;
           });
-          edges.style('opacity', function (o:any) {
+          edges.style('opacity', function (o: any) {
             return d.index == o.source.index || d.index == o.target.index
               ? 1
               : 0.1;

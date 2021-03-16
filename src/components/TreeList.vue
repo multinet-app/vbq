@@ -201,7 +201,7 @@ export default Vue.extend({
       columnHeader: [
         {
           label: 'Count',
-          value: (d:any) => d.value,
+          value: (d: any) => d.value,
         },
       ],
     };
@@ -279,7 +279,7 @@ export default Vue.extend({
         .range(d3.schemeCategory10);
     },
     colorTracker(): any {
-      const colorDict:any = {};
+      const colorDict: any = {};
       this.colorDomain.forEach((n: number) => {
         colorDict[n] = [];
       });
@@ -321,7 +321,7 @@ export default Vue.extend({
     // Set up color scale
     const colorDomainVals: string[] = this.root
       .descendants()
-      .map((c:any) => (c.children ? null : c.data.id));
+      .map((c: any) => (c.children ? null : c.data.id));
     this.colorScaleVal = d3
       .scaleOrdinal()
       .domain(colorDomainVals)
@@ -406,12 +406,12 @@ export default Vue.extend({
 
       //  Calculate numbers of nodes in each category
       const schemaTable: any = {};
-      this.schemaNetwork.nodes.forEach((n:any) => {
+      this.schemaNetwork.nodes.forEach((n: any) => {
         schemaTable[n.Label] = n.children.length;
       });
 
       const tableData: any[] = [];
-      this.root.descendants().forEach((n:any) => {
+      this.root.descendants().forEach((n: any) => {
         const obj: any = { key: '', value: 0 };
         if (schemaTable[n.id.toUpperCase()]) {
           obj.key = n.id;
@@ -439,9 +439,9 @@ export default Vue.extend({
           .attr('dy', '0.32em')
           .attr('x', this.width - label.length)
           .attr('text-anchor', 'end')
-          .attr('fill', (d:any) => (d.children ? null : '#555'))
+          .attr('fill', (d: any) => (d.children ? null : '#555'))
           .data(tableData)
-          .text((d:any) => d.value);
+          .text((d: any) => d.value);
       }
 
       node
@@ -461,7 +461,7 @@ export default Vue.extend({
 
     click(this: any, d: any) {
       const allPaths = [];
-      const change: string[] = this.familyTree.filter((i:any) => i == d.id);
+      const change: string[] = this.familyTree.filter((i: any) => i == d.id);
       allPaths.push(d.index);
       if (d.parent) {
         if (d.children) {
